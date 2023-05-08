@@ -33,10 +33,12 @@ namespace HelloWorld
 
         public void MoveForward()
         {
+            // se controla que si no es el mismo no mueva al resto
             if (!IsOwner)
             {
                 return;
             }
+            // si es el server o host se mueve directamente sino se llama a la variable tipo ServerRpc que realiza el movmiento
             if (NetworkManager.Singleton.IsServer)
             {
                 transform.position += Vector3.forward;
@@ -104,6 +106,8 @@ namespace HelloWorld
         {
             Position.Value = GetRandomPositionOnPlane();
         }
+
+        // se crea un metodo ServerRpc para cada tipo de movimiento
         [ServerRpc]
         void MoveToForwardServerRpc(ServerRpcParams rpcParams = default)
         {
@@ -132,6 +136,8 @@ namespace HelloWorld
 
         void Update()
         {
+            // se controla la entrada de input para el movimiento del player
+            // se llama a la funcion que realiza el movimiento acorde
             if (Input.GetKeyDown(KeyCode.W))
             {
                 Debug.Log("mover arriba");
@@ -152,6 +158,8 @@ namespace HelloWorld
                 Debug.Log("mover derecha");
                 MoveRight();
             }
+
+            // se ajusta el valor de la variable de red al transform del player
             transform.position = Position.Value;
         }
     }
