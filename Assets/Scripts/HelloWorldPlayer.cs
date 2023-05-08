@@ -33,6 +33,10 @@ namespace HelloWorld
 
         public void MoveForward()
         {
+            if (!IsOwner)
+            {
+                return;
+            }
             if (NetworkManager.Singleton.IsServer)
             {
                 transform.position += Vector3.forward;
@@ -41,6 +45,57 @@ namespace HelloWorld
             else
             {
                 MoveToForwardServerRpc();
+            }
+        }
+
+        public void MoveBack()
+        {
+            if (!IsOwner)
+            {
+                return;
+            }
+            if (NetworkManager.Singleton.IsServer)
+            {
+                transform.position += Vector3.back;
+                Position.Value = transform.position;
+            }
+            else
+            {
+                MoveToBackServerRpc();
+            }
+        }
+
+        public void MoveLeft()
+        {
+            if (!IsOwner)
+            {
+                return;
+            }
+            if (NetworkManager.Singleton.IsServer)
+            {
+                transform.position += Vector3.left;
+                Position.Value = transform.position;
+            }
+            else
+            {
+                MoveToLeftServerRpc();
+            }
+        }
+
+        public void MoveRight()
+        {
+            if (!IsOwner)
+            {
+                return;
+            }
+            if (NetworkManager.Singleton.IsServer)
+            {
+                transform.position += Vector3.right;
+                Position.Value = transform.position;
+            }
+            else
+            {
+                MoveToRightServerRpc();
             }
         }
 
@@ -85,17 +140,17 @@ namespace HelloWorld
             if (Input.GetKeyDown(KeyCode.S))
             {
                 Debug.Log("mover abajo");
-                MoveToBackServerRpc();
+                MoveBack();
             }
             if (Input.GetKeyDown(KeyCode.A))
             {
                 Debug.Log("mover izquierda");
-                MoveToLeftServerRpc();
+                MoveLeft();
             }
             if (Input.GetKeyDown(KeyCode.D))
             {
                 Debug.Log("mover derecha");
-                MoveToRightServerRpc();
+                MoveRight();
             }
             transform.position = Position.Value;
         }
